@@ -69,3 +69,30 @@ model:
       params:
         n_embed: 1280
         n_layer: 32
+
+data:
+  target: main.DataModuleFromConfig
+  params:
+    batch_size: 4
+    num_workers: 4
+    wrap: false
+    train:
+      target: ldm.data.visdial.VisDialValidation
+      params:
+        size: 256
+    validation:
+      target: ldm.data.visdial.VisDialValidation
+      params:
+        size: 256
+
+lightning:
+  callbacks:
+    image_logger:
+      target: main.ImageLogger
+      params:
+        batch_frequency: 70
+        max_images: 3
+        increase_log_steps: False
+
+  trainer:
+    benchmark: True
