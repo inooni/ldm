@@ -4,16 +4,13 @@ import json
 import albumentations
 import cv2
 import numpy as np
-from tqdm import tqdm
 from torch.utils.data import Dataset, DataLoader
-from torchvision import transforms
 
 
-# For Val 
 class VisDialBase(Dataset): 
     def __init__(self, config=None, size=None, interpolation="bicubic", random_crop=False, crop_size=None):
         self.split = self.get_split()
-        self.root_dir = "/hub_data1/inho/data/visdial"
+        self.root_dir = "/hub_data3/miso/datasets/visdial"
 
         self.data = self.load_data()
 
@@ -60,23 +57,14 @@ class VisDialBase(Dataset):
                 image_id = str(int(image_file.split('_')[-1].split('.')[0]))
                 imgid_file_map[image_id] = image_file
             
-            # should load only the image matching with image_id in dialog file
-            # import pdb; pdb.set_trace()
-            count = 0
             for image_id in image_id_list:
-                import pdb; pdb.set_trace()
-                if image_id in imgid_file_map.keys():
-                    image_file = imgid_file_map[image_id]
-                else:
-                    count = count + 1
-                    continue    
+                image_file = imgid_file_map[image_id]
                 if 'train' in image_file:
-                    image_path = os.path.join(image_dir_cocotrain, image_file)
+                    image_path = os.path.join(image_dir_cocotrain, imgid_file_map[image_id]) 
                 else:
-                    image_path = os.path.join(image_dir_cocoval, image_file) 
+                    image_path = os.path.join(image_dir_cocoval, imgid_file_map[image_id]) 
+                data.append({'image_path': image_path, 'dialog_data': dialog_data[image_id]})
 
-                data.append({'image_path': image_path, 'dialog_path': dialog_data[image_id]})
-            print(count, len(data))
         elif self.split == 'val':
             image_dir = os.path.join(self.root_dir, 'images', 'VisualDialog_val2018')
             dialog_dir = os.path.join(self.root_dir, 'dialogs')
@@ -96,7 +84,7 @@ class VisDialBase(Dataset):
         return len(self.data)
 
     def __getitem__(self, i):
-        example = dict((k, self.data[i][k]) for k in self.data[i])
+        example = dict((k, self.data[i][k]) for k in self.data[i]) 
         image_path = example['image_path']
         dialog_data = example['dialog_data']
         
@@ -110,8 +98,8 @@ class VisDialBase(Dataset):
         example["image"] = (image / 127.5 - 1.0).astype(np.float32)
         dialog = ""
         for i in range(10):
-            dialog = dialog + dialog_data['dialogs'][i]['question'] + dialog_data['dialogs'][i]['answer'] + "\n"
-        example["caption"] = dialog
+            dialog = dialog + dialog_data['dialogs'][i]['question'] + " " + dialog_data['dialogs'][i]['answer'] + "\n"
+        example["full_dialog"] = dialog
         return example
 
 
