@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
 
     config = OmegaConf.load("configs/latent-diffusion/txt2img-1p4B-eval.yaml")  # TODO: Optionally download from same location as ckpt and chnage this logic
-    model = load_model_from_config(config, "models/ldm/text2img-large/model.ckpt")  # TODO: check path
+    model = load_model_from_config(config, "models/ldm/txt2img-f8-large/model.ckpt")  # TODO: check path
 
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     model = model.to(device)
@@ -160,6 +160,6 @@ if __name__ == "__main__":
 
     # to image
     grid = 255. * rearrange(grid, 'c h w -> h w c').cpu().numpy()
-    Image.fromarray(grid.astype(np.uint8)).save(os.path.join(outpath, f'{prompt.replace(" ", "-")}.png'))
+    Image.fromarray(grid.astype(np.uint8)).save(os.path.join(outpath, 'result.png'))
 
     print(f"Your samples are ready and waiting four you here: \n{outpath} \nEnjoy.")

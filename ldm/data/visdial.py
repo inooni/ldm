@@ -10,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 class VisDialBase(Dataset): 
     def __init__(self, config=None, size=None, interpolation="bicubic", random_crop=False, crop_size=None):
         self.split = self.get_split()
-        self.root_dir = "/hub_data3/miso/datasets/visdial"
+        self.root_dir = "/hub_data1/inho/data/visdial"
 
         self.data = self.load_data()
 
@@ -98,8 +98,8 @@ class VisDialBase(Dataset):
         example["image"] = (image / 127.5 - 1.0).astype(np.float32)
         dialog = ""
         for i in range(10):
-            dialog = dialog + dialog_data['dialogs'][i]['question'] + " " + dialog_data['dialogs'][i]['answer'] + "\n"
-        example["full_dialog"] = dialog
+            dialog = dialog + dialog_data['dialogs'][i]['question'] + " " + dialog_data['dialogs'][i]['answer'] + ". "
+        example["caption"] = dialog
         return example
 
 
