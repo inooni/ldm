@@ -1,1 +1,1 @@
-CUDA_VISIBLE_DEVICES=7 torchrun --master_port 10030 --nproc_per_node 1 llama_generation.py --ckpt_dir /hub_data2/miso/llama_ckpt/llama-2-7b-chat/ --tokenizer_path /hub_data2/miso/llama_ckpt/llama-2-7b-chat/tokenizer.model --max_seq_len 512 --max_batch_size 32
+CUDA_VISIBLE_DEVICES=2 torchrun --master_port 10031 --nproc_per_node 1 llama_generation.py --ckpt_dir /hub_data1/miso/llama-2-7b-chat/ --tokenizer_path /hub_data1/miso/llama-2-7b-chat/tokenizer.model --name short --max_batch_size 16

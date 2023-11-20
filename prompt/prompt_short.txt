@@ -1,0 +1,4 @@
+Please make a proper text for prompting Text-to-Image model 
+  given a sequence of dialogues about an image.
+Do not say A or B, since they are not helpful when drawing something.
+Extract the key contents from whole dialogs and make only one sentence.

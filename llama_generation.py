@@ -8,21 +8,24 @@ import json
 import re
 from tqdm import tqdm
 from llama import Llama, Dialog
+import os
 
 
-def get_prompt():
-    with open('prompt/example.txt') as f:
+def get_prompt(name):
+    with open(f'prompt/prompt_{name}.txt') as f:
         prompt = f.read()
     return prompt
 
 def get_datasets():
-    anno_dir = '/hub_data2/miso/ldm/datasets/visdial/dialogs/train_imgid_dialogs.json'
+    anno_dir = '/hub_data1/miso/ldm/datasets/visdial/dialogs/train_imgid_dialogs.json'
     with open(anno_dir) as f:
         annotations = json.load(f)
     return annotations
 
-def save_datasets(results):
-    save_dir = 'results/example_imgid.json'
+def save_datasets(name, results):
+    if not os.path.exists('results'):
+        os.makedirs('results')
+    save_dir = f'results/example_{name}.json'
     with open(save_dir, 'w') as f:
         json.dump(results, f, indent=4)
 
@@ -40,6 +43,7 @@ def extract_generated_sentence(result):
 def main(
     ckpt_dir: str,
     tokenizer_path: str,
+    name: str,
     # save_dir: str = None,
     temperature: float = 0.6,
     top_p: float = 0.9,
@@ -54,7 +58,7 @@ def main(
         max_seq_len=max_seq_len,
         max_batch_size=max_batch_size,
     )
-    prompt = get_prompt()
+    prompt = get_prompt(name)
     annotations = get_datasets()
     
     dialogs = list()
@@ -89,7 +93,7 @@ def main(
                     dia = dia[1]['content'].split('Original Dialogs: ')[-1]
                     generations[img_id] = {"dialog": dia, "instruction": res}
                     # generations.append({"dialog": dia, "instruction": res})
-                save_datasets(generations)
+                save_datasets(name, generations)
                 dialogs = list()
                 image_ids = list()
             except:
@@ -98,6 +102,6 @@ def main(
                 continue
         else:
             continue
-    save_datasets(generations)
+    save_datasets(name, generations)
 if __name__ == "__main__":
     fire.Fire(main)

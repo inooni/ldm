@@ -1,0 +1,12 @@
+Please make a proper text for prompting Text-to-Image model 
+  given a sequence of dialogues about an image.
+Do not say A or B, since they are not helpful when drawing something.
+Make only one sentence as short as possible.
+
+This is an example of dialogs and generated text for prompting.
+
+### Dialogs: 
+A: is this a child or adult? B: adult\nA: male or female? B: male\nA: are they inside or outside? B: inside\nA: are they laying on the floor? B: yes, but there is a blanket in between them and the floor\nA: is the floor carpeted or wooden? B: it is tile\nA: what color is the blanket? B: red and white\nA: what color is the tile? B: orange red\nA: what breed is the dog? B: boxer\nA: does the dog look healthy and happy? B: yes\nA: what color is the dog? B: tan\n
+
+### Text:
+Create an image of a male adult lying on an orange red tile floor, covered by a red and white blanket, with a tan-colored, happy boxer dog lying next to them.
